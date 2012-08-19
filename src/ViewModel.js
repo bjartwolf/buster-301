@@ -5,10 +5,10 @@ function SeatReservation(name, initialMeal) {
     self.name = name;
     self.meal = ko.observable(initialMeal);
 
-    self.formattedPrice = ko.computed(function() {
+    self.formattedPrice = ko.computed(function () {
         var price = self.meal().price;
-        return price ? "$" + price.toFixed(2) : "None";        
-    });    
+        return price ? "$" + price.toFixed(2) : "None";
+    });
 }
 
 // Overall viewmodel for this screen, along with initial state
@@ -20,7 +20,7 @@ function ReservationsViewModel() {
         { mealName: "Standard (sandwich)", price: 0 },
         { mealName: "Premium (lobster)", price: 34.95 },
         { mealName: "Ultimate (whole zebra)", price: 290 }
-    ];    
+    ];
 
     // Editable data
     self.seats = ko.observableArray([
@@ -29,16 +29,21 @@ function ReservationsViewModel() {
     ]);
 
     // Computed data
-    self.totalSurcharge = ko.computed(function() {
-       var total = 0;
-       for (var i = 0; i < self.seats().length; i++)
-           total += self.seats()[i].meal().price;
-       return total;
-    });    
+    self.totalSurcharge = ko.computed(function () {
+        var total = 0,
+            i;
+        for (i = 0; i < self.seats().length; i += 1) {
+            total += self.seats()[i].meal().price;
+        }
+        return total;
+    });
 
     // Operations
-    self.addSeat = function() {
+    self.addSeat = function () {
         self.seats.push(new SeatReservation("", self.availableMeals[0]));
-    }
-    self.removeSeat = function(seat) { self.seats.remove(seat) }
+    };
+
+    self.removeSeat = function (seat) {
+        self.seats.remove(seat);
+    };
 }
